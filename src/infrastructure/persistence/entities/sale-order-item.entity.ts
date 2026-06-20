@@ -17,7 +17,7 @@ export class SaleOrderItem {
   @Column({ name: 'product_id_almacen', type: 'integer' })
   productIdAlmacen: number;
 
-  @Column({ name: 'product_id_fabrica', type: 'character varying', length: 255 })
+  @Column({ name: 'product_id_fabrica', type: 'varchar', length: 255 })
   productIdFabrica: string;
 
   @ManyToOne(() => Product, (p) => p.saleOrderItems)

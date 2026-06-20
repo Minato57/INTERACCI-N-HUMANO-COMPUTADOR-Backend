@@ -1,17 +1,16 @@
 import { Entity, PrimaryColumn, Column, CreateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { ProductType } from './product-type.entity';
 import { SaleOrderItem } from './sale-order-item.entity';
-import { PurchaseOrderItem } from './purchase-order-item.entity';
 
 @Entity('products')
 export class Product {
   @PrimaryColumn({ name: 'product_id_almacen', type: 'integer' })
   productIdAlmacen: number;
 
-  @PrimaryColumn({ name: 'product_id_fabrica', type: 'character varying', length: 255 })
+  @PrimaryColumn({ name: 'product_id_fabrica', type: 'varchar', length: 255 })
   productIdFabrica: string;
 
-  @Column({ type: 'character varying', length: 255 })
+  @Column({ type: 'varchar', length: 255 })
   name: string;
 
   @Column({ name: 'producttype_id', type: 'integer' })
@@ -21,7 +20,7 @@ export class Product {
   @JoinColumn({ name: 'producttype_id' })
   productType: ProductType;
 
-  @Column({ name: 'producttype_name', type: 'character varying', length: 255 })
+  @Column({ name: 'producttype_name', type: 'varchar', length: 255 })
   productTypeName: string;
 
   @Column({ name: 'price_per_mayor', type: 'numeric', precision: 10, scale: 2 })
@@ -33,16 +32,16 @@ export class Product {
   @Column({ type: 'integer' })
   stock: number;
 
-  @Column({ type: 'character varying', length: 255 })
+  @Column({ type: 'varchar', length: 255 })
   ubicacion: string;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp without time zone' })
+  @CreateDateColumn({ name: 'created_at', type: 'datetime' })
   createdAt: Date;
 
-  @Column({ name: 'is_active', type: 'boolean', default: true })
+  @Column({ name: 'is_active', type: 'tinyint', default: true })
   isActive: boolean;
 
-  @Column({ name: 'image_url', type: 'character varying', length: 255, nullable: true })
+  @Column({ name: 'image_url', type: 'varchar', length: 255, nullable: true })
   imageUrl: string;
 
   @Column({ name: 'stock_minimo', type: 'integer', default: 0 })
@@ -59,7 +58,4 @@ export class Product {
 
   @OneToMany(() => SaleOrderItem, (item) => item.product)
   saleOrderItems: SaleOrderItem[];
-
-  @OneToMany(() => PurchaseOrderItem, (item) => item.product)
-  purchaseOrderItems: PurchaseOrderItem[];
 }

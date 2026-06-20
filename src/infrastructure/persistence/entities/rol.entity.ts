@@ -7,16 +7,16 @@ export class Rol {
   @PrimaryGeneratedColumn({ name: 'id_rol' })
   idRol: number;
 
-  @Column({ type: 'character varying', length: 255 })
+  @Column({ type: 'varchar', length: 255 })
   nombre: string;
 
-  @Column({ type: 'character varying', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   descripcion: string;
 
-  @Column({ type: 'boolean', default: true })
+  @Column({ type: 'tinyint', default: true })
   estado: boolean;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp without time zone' })
+  @CreateDateColumn({ name: 'created_at', type: 'datetime' })
   createdAt: Date;
 
   @ManyToMany(() => Permiso, (permiso) => permiso.roles)

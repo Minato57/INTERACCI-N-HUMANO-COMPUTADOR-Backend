@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 // Entities
 import { Product } from './infrastructure/persistence/entities/product.entity';
@@ -33,26 +31,22 @@ import { ProductTypeController } from './presentation/controllers/product-type.c
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
+        type: 'mysql',
         host: configService.get<string>('DB_HOST'),
         port: configService.get<number>('DB_PORT'),
         username: configService.get<string>('DB_USERNAME'),
-        password: configService.get<string>('DB_PASSWORD'),
+        password: configService.get<string>('DB_PASSWORD') || '',
         database: configService.get<string>('DB_DATABASE'),
         entities: [__dirname + '/infrastructure/persistence/entities/**/*.entity{.ts,.js}'],
-        synchronize: false, // ¡IMPORTANTE! Manténlo en false para no alterar tu BD en la nube
-        ssl: {
-          rejectUnauthorized: false, // Requerido por la mayoría de servicios en la nube (Render, Supabase, etc.)
-        },
+        synchronize: true, // Automáticamente crea las tablas en XAMPP
       }),
     }),
 
     // 3. Registramos las entidades para su uso en repositorios
     TypeOrmModule.forFeature([Product, ProductType]),
   ],
-  controllers: [AppController, ProductController, ProductTypeController],
+  controllers: [ProductController, ProductTypeController],
   providers: [
-    AppService,
     GetCatalogUseCase,
     GetProductDetailUseCase,
     GetProductTypesUseCase,
