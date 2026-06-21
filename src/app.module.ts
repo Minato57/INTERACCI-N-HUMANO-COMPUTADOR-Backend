@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -18,6 +18,7 @@ import { GetProductTypesUseCase } from './application/use-cases/get-product-type
 // Controllers
 import { ProductController } from './presentation/controllers/product.controller';
 import { ProductTypeController } from './presentation/controllers/product-type.controller';
+import { LoggerMiddleware } from './logger.middleware';
 
 @Module({
   imports: [
@@ -60,4 +61,8 @@ import { ProductTypeController } from './presentation/controllers/product-type.c
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
