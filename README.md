@@ -47,7 +47,13 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado:
 
 ## ⚙️ Configuración del Entorno
 
-Crea un archivo `.env` en la raíz de esta carpeta (`/backend`) con las siguientes variables:
+Crea un archivo `.env` copiando el archivo de ejemplo incluido en el repositorio:
+
+```bash
+copy .env.example .env
+```
+
+Luego edita el `.env` con los valores de tu entorno:
 
 ```env
 # Base de datos
