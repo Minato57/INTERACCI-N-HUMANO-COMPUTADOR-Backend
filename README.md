@@ -1,98 +1,151 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🔧 DIFERPA S.A.C. — Backend API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+[![Repositorio Frontend](https://img.shields.io/badge/Ver_Frontend-%E2%86%92-DD0031?style=flat-square&logo=angular)](https://github.com/Minato57/Interaccion-Humano-Computador-Frontend)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![TypeORM](https://img.shields.io/badge/TypeORM-FF0000?style=for-the-badge&logo=typeorm&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
 
-## Description
+API REST del sistema de catálogo digital para **DIFERPA S.A.C.**, empresa ferretera peruana. Desarrollado como parte del proyecto de Interacción Humano-Computador (IHC) con alineación al **ODS 10 — Reducción de Desigualdades**, facilitando el acceso a productos de construcción desde cualquier dispositivo.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## 📐 Arquitectura
 
-```bash
-$ npm install
+Este proyecto implementa **Clean Architecture** con separación estricta de capas:
+
+```
+src/
+├── application/          # Casos de uso (lógica de negocio)
+│   ├── auth.module.ts    # Módulo de autenticación JWT
+│   └── use-cases/        # GetCatalog, GetProductDetail, GetProductTypes
+├── domain/               # Entidades e interfaces del dominio
+├── infrastructure/       # Persistencia: TypeORM + MySQL
+│   └── persistence/
+│       ├── entities/     # Product, ProductType
+│       └── repositories/ # Implementaciones TypeORM
+├── presentation/         # Controladores HTTP
+│   └── controllers/      # ProductController, ProductTypeController
+├── app.module.ts         # Módulo raíz
+├── logger.middleware.ts  # Middleware de logging
+└── main.ts               # Bootstrap con seguridad (Helmet + Rate Limit)
 ```
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ npm run start
+## ✅ Requisitos Previos
 
-# watch mode
-$ npm run start:dev
+Antes de ejecutar el proyecto, asegúrate de tener instalado:
 
-# production mode
-$ npm run start:prod
+- [Node.js](https://nodejs.org/) v18 o superior
+- [XAMPP](https://www.apachefriends.org/) con MySQL activo (o cualquier servidor MySQL)
+- [npm](https://www.npmjs.com/) v9 o superior
+
+---
+
+## ⚙️ Configuración del Entorno
+
+Crea un archivo `.env` en la raíz de esta carpeta (`/backend`) con las siguientes variables:
+
+```env
+# Base de datos
+DB_HOST=localhost
+DB_PORT=3306
+DB_USERNAME=root
+DB_PASSWORD=
+DB_DATABASE=diferpa_db
+
+# Servidor
+PORT=3001
+
+# CORS
+CORS_ORIGIN=http://localhost:4200
 ```
 
-## Run tests
+> **Nota:** Con `synchronize: true` activado en TypeORM, las tablas se crean automáticamente al iniciar el servidor. No necesitas ejecutar migraciones manualmente.
+
+---
+
+## 🚀 Instalación y Ejecución
 
 ```bash
-# unit tests
-$ npm run test
+# 1. Instalar dependencias
+npm install
 
-# e2e tests
-$ npm run test:e2e
+# 2. Iniciar en modo desarrollo (con hot-reload)
+npm run start:dev
 
-# test coverage
-$ npm run test:cov
+# 3. Iniciar en modo producción
+npm run start:prod
 ```
 
-## Deployment
+El servidor estará disponible en: **`http://localhost:3001`**
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+---
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## 🛡️ Seguridad Implementada
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+Este backend incluye las siguientes medidas de seguridad aplicadas mediante las prácticas de `api-security-best-practices`:
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+| Medida | Descripción |
+|---|---|
+| **Helmet** | Cabeceras HTTP de seguridad contra XSS y Clickjacking |
+| **Rate Limiting** | Máximo 100 peticiones por IP cada 15 minutos |
+| **JWT Auth** | Tokens de acceso con expiración de 60 minutos |
+| **bcrypt** | Encriptación segura de contraseñas |
+| **CORS** | Restricción de origen a `http://localhost:4200` |
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## 📡 Endpoints de la API
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Base URL: `http://localhost:3001`
 
-## Support
+### Productos
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/products` | Obtiene todos los productos del catálogo |
+| `GET` | `/products?category={nombre}` | Filtra productos por categoría |
+| `GET` | `/products/:idAlmacen/:idFabrica` | Obtiene el detalle de un producto específico |
 
-## Stay in touch
+### Tipos de Producto
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/product-types` | Obtiene todas las categorías disponibles |
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 🧰 Tecnologías Utilizadas
+
+- **Framework:** NestJS (Node.js)
+- **Lenguaje:** TypeScript
+- **ORM:** TypeORM
+- **Base de Datos:** MySQL (via XAMPP)
+- **Autenticación:** JWT + Passport.js
+- **Seguridad:** Helmet, express-rate-limit, bcrypt
+- **Arquitectura:** Clean Architecture
+
+---
+
+## 🔗 Repositorios Relacionados
+
+| Repo | Enlace |
+|------|--------|
+| 🌐 **Frontend** | [Interaccion-Humano-Computador-Frontend](https://github.com/Minato57/Interaccion-Humano-Computador-Frontend) |
+| ⚙️ **Backend** (este repo) | [Interaccion-Humano-Computador-Backend](https://github.com/Minato57/Interaccion-Humano-Computador-Backend) |
+
+---
+
+## 👥 Equipo
+
+Proyecto desarrollado para el curso de **Interacción Humano-Computador** — Universidad.
+
+---
+
+## 📄 Licencia
+
+Este proyecto es de uso académico.
